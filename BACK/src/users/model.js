@@ -1,20 +1,15 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema
-const ObjectId = mongoose.Schema.Types.ObjectId;
-
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  _id: {
-   type: String,
-   required: true
-  },
   username: {
     type: String,
     index: true,
     required: true
   },
   password: {
-    type: String
+    type: String,
+    required: true
   },
   email: {
     type: String,
@@ -22,16 +17,14 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ['admin', 'user', 'visitor'],
+    enum: ["admin", "user", "visitor"],
     required: true,
-    default: 'visitor'
+    default: "visitor"
   }
-})
+});
 
-// REST 
+// REST
 
-
-const User = mongoose.model('User', userSchema)
-
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
