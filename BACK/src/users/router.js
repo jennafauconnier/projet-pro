@@ -20,7 +20,7 @@ userRouter.post('/login', (req, res) => {
   })
 })
 
-userRouter.post('/register', (req, res) => {
+userRouter.post('/login', (req, res) => {
   const newUser = new User(req.body)
 
   newUser.save((err, user) => {

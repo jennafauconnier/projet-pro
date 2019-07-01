@@ -1,6 +1,5 @@
 const User = require("./model");
 const bcrypt = require('bcrypt');
-const userSchema = require('./model');
 
 const BCRYPT_SALT_ROUNDS = 10;
 
@@ -16,52 +15,62 @@ const getAll = async (req, res) => {
 
 
 const create = async (req, res) => {
-  const { username, password, email, role } = req.body;
-  if (username && password && email && role) {
+  const {
+    username,
+    password,
+    email
+  } = req.body;
 
-    const hash = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
+  try {
+    if (!username || !password) {
+      throw 'all fields are required'
+    }
+
+    const hash = await bcrypt.hashSync(password, BCRYPT_SALT_ROUNDS);
     // je créer un objet qui va me permettre de recuperer ce que l'utilisateur rentre suivant le model
     const newUser = {
       username: username,
       password: hash,
-      email: email,
-      role: role
+      email: email
     };
 
     // ici j'envoie notre objet en BDD via une methode mongoose
-    User.create(newUser, (err, res) => {
-      if (err) console.log(err);
+    User.create(newUser, (err, res_create) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.status(200).send('user register with success');
+      }
     });
-    res.status(200).send("user register with success");
-  } else {
-    res.status(412).send("all fields are required");
+  } catch (error) {
+    res.status(200).send(error);
   }
 };
 
 const login = async (req, res) => {
 
   const { username, password } = req.body;
-
   let isSamePassword;
   let user;
 
   try {
-    user = await User.find({username});
-    isSamePassword = await bcrypt.compare(password, user.password);
+    user = await User.findOne({ username });
+    if (!user) {
+      throw "Ce user n'existe pas"
+    }
+
+
+    isSamePassword = await bcrypt.compareSync(password, user.password);
+
+    if (!isSamePassword) {
+      throw 'Wrong password'
+    }
+    res.send(user);
   } catch (error) {
     console.log("Error authenticating user");
     console.log(error);
-    res.status(502).send();
-    return;
-  }
-
-  if(!isSamePassword) {
     res.status(403).send();
   }
-
-  res.send();
-  
-  next();
 }
 
 const updateById = (req, res) => {
