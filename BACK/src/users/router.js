@@ -3,7 +3,7 @@ const userRouter = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('./model.js');
 
-userRouter.post('/login', (req, res) => {
+userRouter.post('/signin', (req, res) => {
   const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
@@ -20,7 +20,7 @@ userRouter.post('/login', (req, res) => {
   })
 })
 
-userRouter.post('/login', (req, res) => {
+userRouter.post('/signup', (req, res) => {
   const newUser = new User(req.body)
 
   newUser.save((err, user) => {
