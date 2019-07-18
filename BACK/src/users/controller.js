@@ -15,10 +15,10 @@ const getAll = async (req, res) => {
 
 
 const create = async (req, res) => {
+  console.log('toto');
   const {
     username,
-    password,
-    email
+    password
   } = req.body;
 
   try {
@@ -30,8 +30,7 @@ const create = async (req, res) => {
     // je créer un objet qui va me permettre de recuperer ce que l'utilisateur rentre suivant le model
     const newUser = {
       username: username,
-      password: hash,
-      email: email
+      password: hash
     };
 
     // ici j'envoie notre objet en BDD via une methode mongoose
@@ -48,6 +47,7 @@ const create = async (req, res) => {
 };
 
 const login = async (req, res) => {
+  console.log('tebe')
 
   const { username, password } = req.body;
   let isSamePassword;
@@ -65,7 +65,7 @@ const login = async (req, res) => {
     if (!isSamePassword) {
       throw 'Wrong password'
     }
-    res.send(user);
+    res.send({});
   } catch (error) {
     console.log("Error authenticating user");
     console.log(error);

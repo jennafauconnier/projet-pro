@@ -12,13 +12,8 @@ app.use(express.json());
 
 app.use(cors());
 
-app.get("/", function(req, res) {
-  res.send("You gooooooo girl!");
-});
 
 app.get("/users", users.controller.getAll);
-
-app.post("/users", users.controller.create);
 
 app.post("/login", users.controller.login);
 
