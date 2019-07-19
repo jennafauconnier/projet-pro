@@ -69,8 +69,12 @@ const login = async (req, res) => {
       sub: user.id,
       username: user.username
     }, "mykey", {expiresIn: "3 hours"});
-
     res.status(200).send({access_token: token});
+
+    jwt.verify(token, username, function(err, decoded) {
+      console.log(username)
+    });
+
   } catch (error) {
     console.log("Error authenticating user");
     console.log(error);
