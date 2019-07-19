@@ -3,25 +3,21 @@ const mongoose = require('mongoose');
 const app = express();
 const cors = require("cors")
 const users = require('./users');
+const rooms = require('./rooms');
 const bodyParser = require('body-parser');
 const userRouter = require('./users/router')
-
+const socket = require('./socket');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(cors());
 
-
-app.get("/users", users.controller.getAll);
-
 app.post("/login", users.controller.login);
 
-app.put("/users/update/:id", users.controller.updateById);
-
-app.delete("/users/:id", users.controller.remove);
-
 app.use('/users', userRouter);
+
+app.use('/rooms', rooms.controller.getAll);
 
 mongoose.connect("mongodb://localhost:27017/chat_messenger", {
   useNewUrlParser: true
@@ -36,5 +32,7 @@ db.once("open", function() {
 app.listen(4332, function() {
   console.log("This app is on port 4332!");
 });
+
+socket.init(app);
 
 
