@@ -59,17 +59,16 @@ const login = async (req, res) => {
       throw "Ce user n'existe pas"
     }
 
-
     isSamePassword = await bcrypt.compareSync(password, user.password);
 
     if (!isSamePassword) {
-      throw 'Wrong password'
+      throw new Error('Wrong password')
     }
-    res.send({});
+    res.status(200).send({});
   } catch (error) {
     console.log("Error authenticating user");
     console.log(error);
-    res.status(403).send();
+    res.status(403).send({});
   }
 }
 
@@ -96,11 +95,6 @@ const remove = (req, res) => {
     res.status(200).send("user delete with success");
   });
 };
-
-// récupérer utilisateur par email
-// créer un utilisateur
-// mettre à jour les données d'un utilisateur
-// supprimer un utilisateur
 
 module.exports = {
   create,
