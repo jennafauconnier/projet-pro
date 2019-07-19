@@ -1,5 +1,6 @@
 const User = require("./model");
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 
 const BCRYPT_SALT_ROUNDS = 10;
 
@@ -47,7 +48,6 @@ const create = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  console.log('tebe')
 
   const { username, password } = req.body;
   let isSamePassword;
@@ -64,7 +64,13 @@ const login = async (req, res) => {
     if (!isSamePassword) {
       throw new Error('Wrong password')
     }
-    res.status(200).send({});
+
+    const token = jwt.sign({
+      sub: user.id,
+      username: user.username
+    }, "mykey", {expiresIn: "3 hours"});
+
+    res.status(200).send({access_token: token});
   } catch (error) {
     console.log("Error authenticating user");
     console.log(error);

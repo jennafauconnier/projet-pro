@@ -7,6 +7,11 @@ const getAll = async (req, res) => {
   res.send(rooms);
 }
 
+const createRoom = async (req, res) => {
+   console.log('create room');
+}
+
 module.exports = {
-  getAll
+  getAll,
+  createRoom
 }
