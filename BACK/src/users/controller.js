@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 
 const BCRYPT_SALT_ROUNDS = 10;
+const JWT_SECRET = 'Os7èsSAàDOijqdspoUk';
 
 const getAll = async (req, res) => {
   try {
@@ -68,12 +69,18 @@ const login = async (req, res) => {
     const token = jwt.sign({
       sub: user.id,
       username: user.username
-    }, "mykey", {expiresIn: "3 hours"});
-    res.status(200).send({access_token: token});
+    }, JWT_SECRET, {expiresIn: "3 hours"});
+    res.status(200).send({ token: token });
 
-    jwt.verify(token, username, function(err, decoded) {
-      console.log(username)
-    });
+    // const decoded = jwt.verify(token, username, function(err) {
+    //   if (token === username) {
+    //     console.log('Success')
+    //   } else {
+    //     console.log(err)
+    //   }
+    // });
+
+    // console.log(decoded)
 
   } catch (error) {
     console.log("Error authenticating user");
