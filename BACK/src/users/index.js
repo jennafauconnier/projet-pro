@@ -1,11 +1,7 @@
+const controller = require('./controller');
+const model = require('./model');
+
 module.exports = {
-  controller: require('./controller'),
-  model: require('./model')
+  controller,
+  model,
 };
-
-
-
-
-
-
-

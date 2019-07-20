@@ -1,3 +1,5 @@
+const controller = require('./controller');
+
 module.exports = {
-  controller: require('./controller')
+  controller,
 };

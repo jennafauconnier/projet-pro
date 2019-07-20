@@ -1,7 +1,7 @@
 const http = require('http');
 const socketio = require('socket.io');
 const jwt = require('jsonwebtoken');
-const {JWT_SECRET} = require('./users/controller')
+const {JWT_SECRET} = require('./users/controller'); 
 
 let io;
 
@@ -32,7 +32,12 @@ function init(app) {
   httpServer.listen(3007, function(){
     console.log('listening on *:3007');
   });
+}
 
+function getSocketById(id) {
+  const sockets = Object.values(io.sockets.clients().sockets);
+  const matchingSocket = sockets.find(socket => socket.__user.id === id);
+  return matchingSocket;
 }
 
 function get() {
@@ -42,6 +47,7 @@ function get() {
 module.exports = {
   init,
   get,
+  getSocketById
 }
 
 // connexion a un fichier socketio pour éviter une dépendance ciruculaire
