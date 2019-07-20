@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const app = express();
 const cors = require("cors")
 const users = require('./users');
-const rooms = require('./rooms');
 const bodyParser = require('body-parser');
 const userRouter = require('./users/router')
+const roomsRouter = require('./rooms/router')
 const socket = require('./socket');
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,7 +17,7 @@ app.post("/login", users.controller.login);
 
 app.use('/users', userRouter);
 
-app.use('/rooms', rooms.controller.getAll);
+app.use('/rooms', roomsRouter);
 
 mongoose.connect("mongodb://localhost:27017/chat_messenger", {
   useNewUrlParser: true

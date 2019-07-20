@@ -1,4 +1,7 @@
 const io = require('../socket');
+const jwt = require('jsonwebtoken');
+const {JWT_SECRET} = require('../users/controller');
+
 
 // création de la route qui permet de rejoindre une room
 
@@ -8,7 +11,15 @@ const getAll = async (req, res) => {
 }
 
 const createRoom = async (req, res) => {
-   console.log('create room');
+
+   let token = req.headers.authorization.replace('Bearer ', '');
+   jwt.verify(token, JWT_SECRET, function(err, aliveToken) {
+     if(!aliveToken || err) {
+       res.status(403).send('Dead link');
+     } else {
+       console.log('Verify token ok')
+     }
+   })
 }
 
 module.exports = {

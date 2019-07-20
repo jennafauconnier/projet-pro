@@ -67,20 +67,10 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign({
-      sub: user.id,
+      id: user.id,
       username: user.username
     }, JWT_SECRET, {expiresIn: "3 hours"});
     res.status(200).send({ token: token });
-
-    // const decoded = jwt.verify(token, username, function(err) {
-    //   if (token === username) {
-    //     console.log('Success')
-    //   } else {
-    //     console.log(err)
-    //   }
-    // });
-
-    // console.log(decoded)
 
   } catch (error) {
     console.log("Error authenticating user");
@@ -118,5 +108,6 @@ module.exports = {
   login,
   getAll,
   updateById,
-  remove
+  remove,
+  JWT_SECRET
 };
