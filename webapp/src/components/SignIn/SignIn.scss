@@ -1,0 +1,24 @@
+.sign-in_form-element input {
+  border-radius: 5px;
+  display: block;
+  width: 200px;
+  line-height: 50px;
+  text-align: center;
+  border: 1px solid #6eb7da;
+  font-weight: 200;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sign-in_form-username {
+  margin: 20px
+}
+
+.sign-in_form-password {
+  margin: 20px
+}
+
+label {
+  font-family : 'Roboto';
+  font-size : 18px;
+}
