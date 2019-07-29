@@ -43,16 +43,13 @@ class SignUp extends Component {
           </div>
           <form className="sign-up_form">
             <div className="sign-up_form-element sign-up_form-username">
-              <label>Username</label>
-              <input type="text" id="username" name="username" required placeholder="Enter your username" value={this.state.username} onChange={this.handleChange}></input>
+              <input type="text" id="username" name="username" required placeholder="Username" value={this.state.username} onChange={this.handleChange}></input>
             </div>
             <div className="sign-up_form-element sign-up_form-password">
-              <label>Password</label>
-              <input type="password" id="password" name="password" required placeholder="Enter your password" value={this.state.password} onChange={this.handleChange}></input>
+              <input type="password" id="password" name="password" required placeholder="Password" value={this.state.password} onChange={this.handleChange}></input>
             </div>
             <div className="sign-up_form-element sign-up_form-password">
-              <label>Confirmed password</label>
-              <input type="password" id="confirmed_password" name="confirmed_password" required placeholder="Confirmed Password"></input>
+              <input type="password" id="confirmed_password" name="confirmed_password" required placeholder="Confirmed password"></input>
             </div>
           </form>
           <div className="sign-up_button">

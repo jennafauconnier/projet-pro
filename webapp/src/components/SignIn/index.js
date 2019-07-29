@@ -54,12 +54,10 @@ class SignIn extends Component {
               </div>
               <form className="sign-in_form">
                   <div className="sign-in_form-element sign-in_form-username">
-                      <label>Username</label>
-                      <input type="text" id="username" name="username" required placeholder="Enter username" value={this.state.username} onChange={this.handleChange}></input>
+                      <input type="text" id="username" name="username" required placeholder="Username" value={this.state.username} onChange={this.handleChange}></input>
                   </div>
                   <div className="sign-in_form-element sign-in_form-password">
-                      <label>Password</label>
-                      <input type="password" id="password" name="password" required placeholder="Enter password" value={this.state.password} onChange={this.handleChange}></input>
+                      <input type="password" id="password" name="password" required placeholder="Password" value={this.state.password} onChange={this.handleChange}></input>
                   </div>
               </form>
               <div className="sign-in_button">

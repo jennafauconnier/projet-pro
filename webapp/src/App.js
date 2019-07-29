@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Header from './components/Header';
 import Home from './components/Home';
 import Room from './components/Room';
+import PrivateRoom from './components/PrivateRoom';
 import { Provider } from 'react-redux';
 import configureStore from './redux/store';
 import { initialState } from './redux/reducer';
@@ -28,6 +29,7 @@ class App extends Component {
                     <Switch>
                       <Route path="/login" component={Login} />
                       <Route path="/room/:roomName" component={Room} />
+                      <Route path="/room/:roomName/messages" component={PrivateRoom} />
                       <Route path="/" component={Home} />
                     </Switch>
                   </Router>

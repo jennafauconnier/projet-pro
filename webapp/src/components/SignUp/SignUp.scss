@@ -1,20 +1,38 @@
 .sign-up_content {
-  background-color: #e2e2e2;
-  margin: 100px;
-  padding: 100px;
-  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #FFFFFF;
+  width: 500px;
+  height: 600px;
 }
 
+.sign-up_title h2 {
+  font-family: 'Roboto';
+  font-size: 35px;
+  font-weight: 500;
+}
 
+.sign-up_form input {
+  padding: 12px 55px;
+  margin: 8px 0;
+  background: #eee;
+  border: none;
+}
 
-.sign-up_form-element input {
-  border-radius: 5px;
-  display: block;
-  width: 200px;
-  line-height: 50px;
-  text-align: center;
-  border: 2px solid #6eb7da;
-  font-weight: 200;
-  margin-left: auto;
-  margin-right: auto;
+.sign-up_button {
+  margin: 20px;
+}
+
+.sign-up_submit {
+	border-radius: 20px;
+	border: 1px solid #FF4B2B;
+	background-color: #FF4B2B;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
 }

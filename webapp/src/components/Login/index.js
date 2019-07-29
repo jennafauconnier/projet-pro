@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import SignIn from '../SignIn';
 import SignUp from '../SignUp';
+import './Login.scss';
+
 
 class Login extends Component {
   componentDidMount() {
