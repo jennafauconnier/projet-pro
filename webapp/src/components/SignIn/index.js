@@ -49,6 +49,7 @@ class SignIn extends Component {
     return(
       <div className="login_sign-in">
           <div className="sign-in_content">
+            <h1>Hello Friends !</h1>
               <div className="sign-in_title">
                   <h2>Sign in</h2>
               </div>

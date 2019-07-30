@@ -3,6 +3,8 @@
   flex-direction: column;
   justify-content: center;
   background: #FFFFFF;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
   width: 500px;
   height: 600px;
 }
@@ -26,8 +28,8 @@
 
 .sign-up_submit {
 	border-radius: 20px;
-	border: 1px solid #FF4B2B;
-	background-color: #FF4B2B;
+	border: 1px solid #2999bb;
+	background-color: #2999bb;
 	color: #FFFFFF;
 	font-size: 12px;
 	font-weight: bold;
