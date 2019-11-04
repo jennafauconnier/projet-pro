@@ -18,8 +18,8 @@ class Login extends Component {
   render() {
     return(
       <div className="login_content">
-        <SignUp />
-        <SignIn onSuccess={this.onSignInSuccess}/>
+        <SignUp onSuccess={this.onSignInSuccess} setToken={setToken}/>
+        <SignIn onSuccess={this.onSignInSuccess} setToken={setToken}/>
       </div>
     )
   }
