@@ -10,7 +10,7 @@ const {
   PG_PASSWORD: PASSWORD,
   PG_DATABASE: DATABASE,
 } = process.env;
-console.log(process.env)
+
 const knexConfig = {
   client: 'pg',
   connection: {
@@ -37,7 +37,7 @@ async function init() {
     await client.migrate.latest();
   }
 
-  console.info('MYSQL initialized');
+  console.info('PG initialized');
 }
 
 function get() {

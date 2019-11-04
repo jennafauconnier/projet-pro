@@ -1,45 +1,42 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('./model');
+const sql = require('../services/sql');
 
 const BCRYPT_SALT_ROUNDS = 10;
 const JWT_SECRET = 'Os7èsSAàDOijqdspoUk';
 
 const getAll = async (req, res) => {
+  const knex = sql.get();
   try {
-    const users = await User.find();
+    const users = await knex('users').select(['id', 'username']);
     res.status(200).send(users);
   } catch (error) {
-    console.error('Error', error);
-    res.status(500).send('Error while fetching all');
+    res.status(500).send(error);
   }
 };
 
 const create = async (req, res) => {
   const { username, password } = req.body;
 
+  if (!username || !password) {
+    return res.status(400).send();
+  }
+
+  const hash = await bcrypt.hashSync(password, BCRYPT_SALT_ROUNDS);
+  // je créé un objet qui va me permettre de recuperer ce que l'utilisateur rentre suivant le model
+  const newUser = {
+    username,
+    password: hash,
+  };
+
+  const knex = sql.get();
+
   try {
-    if (!username || !password) {
-      throw new Error('all fields are required');
-    }
-
-    const hash = await bcrypt.hashSync(password, BCRYPT_SALT_ROUNDS);
-    // je créer un objet qui va me permettre de recuperer ce que l'utilisateur rentre suivant le model
-    const newUser = {
-      username,
-      password: hash,
-    };
-
-    // ici j'envoie notre objet en BDD via une methode mongoose
-    User.create(newUser, err => {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.status(200).send('user register with success');
-      }
-    });
+    const [user] = await knex('users').insert(newUser, ['id', 'username']);
+    res.status(200).send(user);
   } catch (error) {
-    res.status(200).send(error);
+    res.status(500).send(error);
   }
 };
 
@@ -48,16 +45,20 @@ const login = async (req, res) => {
   let isSamePassword;
   let user;
 
-  try {
-    user = await User.findOne({ username });
-    if (!user) {
-      throw new Error("Ce user n'existe pas");
-    }
+  const knex = sql.get();
 
+  try {
+    const res = await knex('users').where({ username }, '*');
+    user = res[0];
+    console.log(user);
+    if (!user) {
+      return res.status(401).send();
+    }
+    console.log(password, user.password);
     isSamePassword = await bcrypt.compareSync(password, user.password);
 
     if (!isSamePassword) {
-      throw new Error('Wrong password');
+      return res.status(401).send();
     }
 
     const token = jwt.sign(
