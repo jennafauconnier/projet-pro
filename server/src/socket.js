@@ -26,6 +26,10 @@ function init(app) {
       const userRooms = await RoomUsers.find({
         user_id: decryptedToken.id
       });
+      console.log('new connection', {
+        userRooms,
+        user: decryptedToken
+      })
       userRooms.forEach(userRoom => {
         socket.join(userRoom.room)
       })

@@ -1,7 +1,10 @@
+import moment from 'moment';
 import React, { Component } from 'react';
 import { subscribe } from '../../services/socket';
 import { connect } from 'react-redux';
 import './Room.scss';
+import '../../../node_modules/font-awesome/css/font-awesome.min.css'; 
+
 
 
 class Room extends Component {
@@ -13,6 +16,8 @@ class Room extends Component {
   componentDidMount() {
     this.getMessages()
     subscribe('MESSAGE', message => {
+      if (message.room !== this.props.match.params.roomName) return;
+      console.log({ message })
       this.setState({
         messages: this.state.messages.concat(message)
       })
@@ -38,11 +43,8 @@ class Room extends Component {
     })
     
     .then(res => res.json())
-    .then(data => {
-      if (data === 'success') {
-        this.setState({ message : '' });
-        window.location = '/';
-      }
+    .then(() => {
+      this.setState({ message: '' });
     })
     .catch(err => console.warn(err))
   }
@@ -59,6 +61,7 @@ class Room extends Component {
     })
     .then(res => res.json())
     .then(messages => {
+      console.log({ messages })
       this.setState({
         messages,
       })
@@ -66,29 +69,51 @@ class Room extends Component {
     .catch(err => console.warn(err))
   }
 
+  formatDate(date) {
+    return moment(date).format('MM/DD/YYYY')
+  }
+
   render() {
-    console.log(this.props.match.params.roomName);
     return(
       <div className="room_content">
-        <p>T'es dans la room {this.props.match.params.roomName}</p>
-        <ul>
-          { 
-            this.state.messages.map(message => {
-              return <li key={message._id}>{message.text}</li>
-            })
-          }
-        </ul>
-        <div className="room_content_form">
-          <form>
-            <label>
-              Ecrivez votre message
-              <input type="text" name="message" value={this.state.message} onChange={this.onMessageChange}></input>
-            </label>
-          </form>
-          <div className="send_message_button">
-              <button className="button_send" value="Envoyer" onClick={() => this.addMessage(this.state.message)}>Send</button>
-          </div>
+        <div className="room_content_creation">
+          <p>Room {this.props.match.params.roomName}</p>
         </div>
+        <div className="messages">
+          <ul>
+            { 
+              this.state.messages.map(message => {
+                return <li key={message._id}>
+                  <div className="username">
+                    <span>{message.user.username}</span>
+                    <span className="username-date">{this.formatDate(message.date)}</span>
+                    <p>{message.text}</p>
+                  </div>
+                </li>
+              })
+            }
+          </ul>
+        </div>
+        <form 
+          className="room_content_form"
+          onSubmit={(e) => {
+          e.preventDefault()
+          this.addMessage(this.state.message)
+          }}
+        >
+          <label>
+            <input className="send_message_input" type="text" name="message" value={this.state.message} onChange={this.onMessageChange}></input>
+          </label>
+          <div className="send_message_button">
+              <button 
+                className="button_send" 
+                value="Envoyer"
+                type="submit">
+
+                <i className="fa fa-paper-plane"></i>
+              </button>
+          </div>
+        </form>
       </div>
     )
   }

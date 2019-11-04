@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RoomCreation from '../RoomCreation';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import './Home.scss';
 
 class Home extends Component {
   state = {
     rooms : [],
+    users : [],
   }
 
   async componentDidMount() {
@@ -20,6 +21,19 @@ class Home extends Component {
     });
     const { rooms } = await res.json()
     this.setState({ rooms });
+  }
+
+  joinRoom = (roomName) => {
+    fetch(`http://localhost:4332/rooms/${roomName}/join`, {
+      method : 'POST',
+      headers : { 
+         'Accept' : 'application/json',
+         'Content-Type': 'application/json',
+         'Authorization' : `Bearer ${this.props.token}`
+      }
+    }).then( () => {
+      this.props.history.push(`/room/${roomName}`)
+    })
   }
 
   createRoom = (roomName) => {
@@ -57,6 +71,25 @@ class Home extends Component {
     .catch(err => console.warn(err))
   }
 
+  getUsersRoom = () => {
+    const headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization' : `Bearer ${this.props.token}`
+    }
+    fetch(`http://localhost:4332/rooms`, {
+      method : 'GET',
+      headers,
+    })
+    .then(users => {
+      console.log(users);
+      this.setState({
+        users,
+      })
+    })
+    .catch(err => console.warn(err))
+  }
+
   render(){
     return(
     <>
@@ -68,7 +101,10 @@ class Home extends Component {
           { 
             this.state.rooms.map(room => {
               return <li key={room._id}>
-                <Link to={`/room/${room.name}`}>{room.name}</Link>
+                <button type="button" onClick={() => this.joinRoom(room.name)}>
+                  {room.name}
+                {/* // <Link to={`/room/${room.name}`}>{room.name}</Link> */}
+                </button>
               </li>
             })
           }
