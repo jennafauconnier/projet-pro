@@ -9,8 +9,6 @@ userRouter.post('/signup', controller.create);
 
 userRouter.get('/', controller.getAll);
 
-userRouter.put('/update/:id', controller.updateById);
-
 userRouter.delete('/:id', controller.remove);
 
 module.exports = userRouter;

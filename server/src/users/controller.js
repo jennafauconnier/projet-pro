@@ -73,35 +73,23 @@ const login = async (req, res) => {
   }
 };
 
-const updateById = (req, res) => {
-  User.findOneAndUpdate(
-    req.params.id,
-    {
-      $set: req.body, // $set est une agregation mongodb qui en faisant une boucle va recuperer ton objet et le remplir via l'id
-    },
-    err => {
-      if (err) {
-        throw new Error(err);
-      }
-      res.status(200).send('user update with success');
-    },
-  );
-};
+const remove = async (req, res) => {
+  const knex = sql.get();
 
-const remove = (req, res) => {
-  User.deleteOne(req.params._id, err => {
-    if (err) {
-      throw new Error(err);
-    }
-    res.status(200).send('user delete with success');
-  });
+  try {
+    await knex('users')
+      .where({ id: req.params._id })
+      .del();
+    res.status(200).send();
+  } catch (error) {
+    res.status(500).send(error);
+  }
 };
 
 module.exports = {
   create,
   login,
   getAll,
-  updateById,
   remove,
   JWT_SECRET,
 };
