@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 
@@ -8,30 +10,39 @@ const users = require('./users');
 const userRouter = require('./users/router');
 const roomsRouter = require('./rooms/router');
 const socket = require('./socket');
+const mysqlService = require('./services/sql')
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
+async function init() {
+  await mysqlService.init();
 
-app.use(cors());
+  app.use(bodyParser.urlencoded({
+    extended: true
+  }));
+  app.use(express.json());
 
-app.post('/login', users.controller.login);
+  app.use(cors());
 
-app.use('/users', userRouter);
+  app.post('/login', users.controller.login);
 
-app.use('/rooms', roomsRouter);
+  app.use('/users', userRouter);
 
-mongoose.connect('mongodb://localhost:27017/chat_messenger', {
-  useNewUrlParser: true,
-});
+  app.use('/rooms', roomsRouter);
 
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', () => {
-  console.info('Connecté a MongoDB !');
-});
+  mongoose.connect('mongodb://localhost:27017/chat_messenger', {
+    useNewUrlParser: true,
+  });
 
-app.listen(4332, () => {
-  console.info('This app is on port 4332!');
-});
+  const db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'connection error:'));
+  db.once('open', () => {
+    console.info('Connecté a MongoDB !');
+  });
 
-socket.init(app);
+  app.listen(4332, () => {
+    console.info('This app is on port 4332!');
+  });
+
+  socket.init(app);
+}
+
+init();
