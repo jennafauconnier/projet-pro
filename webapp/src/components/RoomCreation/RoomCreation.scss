@@ -1,0 +1,32 @@
+.room_name {
+  background-color: #2999bb;
+  width: 220px;
+  height: 100vh;
+}
+
+.room_name-content {
+  text-transform: uppercase;
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+.room-name_form input {
+  padding: 8px 28px;
+  margin: 8px 0;
+  background: #FFFFFF;
+  border: none;
+}
+
+.room-name_button_submit {
+  margin-top: 10px;
+	border-radius: 20px;
+  border: 1px solid #FFFFFF;
+  background-color: #2999bb; 
+  color: #FFFFFF;
+  text-decoration: none;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 7px 20px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}

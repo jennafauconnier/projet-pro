@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import SignIn from '../SignIn';
 import SignUp from '../SignUp';
+import { connect } from 'react-redux';
+import { setToken } from '../../redux/actions';
 import './Login.scss';
 
 
 class Login extends Component {
   componentDidMount() {
-    fetch('http:localhost:4332/users')
-    .then(res => res.json())
-    .catch(err => console.log(err))
+    this.props.setToken(undefined)
   }
 
   onSignInSuccess = () => {
@@ -16,7 +16,6 @@ class Login extends Component {
   }
 
   render() {
-    console.log(this.props)
     return(
       <div className="login_content">
         <SignUp />
@@ -26,4 +25,8 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = {
+  setToken: setToken,
+}
+
+export default connect(undefined, mapDispatchToProps)(Login);

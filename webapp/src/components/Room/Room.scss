@@ -1,0 +1,16 @@
+.room_content {
+  height: 100vh;
+}
+
+.room_content_form input {
+  border-radius: 20px;
+  border: none;
+  position: absolute;
+  bottom: 0;
+  height: 30px;
+  width: 300px;
+  color: white;
+  flex: 1;
+  background-color: rgba(117, 198, 255, 4);
+  bottom: 20px;
+}

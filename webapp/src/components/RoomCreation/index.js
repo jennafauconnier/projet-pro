@@ -1,4 +1,6 @@
-import React, { Component } from 'react'; 
+import React, { Component } from 'react';
+import './RoomCreation.scss';
+
 
 class RoomCreation extends Component {
   state = {
@@ -20,7 +22,6 @@ class RoomCreation extends Component {
           <p>Create a room</p>
         </div>
         <form className="room-name_form">
-          <label>Name</label>
           <input
             type="text"
             required

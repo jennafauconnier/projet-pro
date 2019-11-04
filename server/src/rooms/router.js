@@ -6,5 +6,7 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 roomRouter.get('/', authMiddleware, controller.getAll);
 roomRouter.post('/', authMiddleware, controller.createRoom);
+roomRouter.post('/:roomName/messages', authMiddleware, controller.addMessage);
+roomRouter.get('/:roomName/messages', authMiddleware, controller.getMessages);
 
 module.exports = roomRouter;

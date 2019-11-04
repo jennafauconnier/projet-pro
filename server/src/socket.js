@@ -1,18 +1,19 @@
 const http = require('http');
 const socketio = require('socket.io');
 const jwt = require('jsonwebtoken');
-const {JWT_SECRET} = require('./users/controller'); 
+const { JWT_SECRET } = require('./users/controller');
+const RoomUsers = require('./rooms/roomModel');
 
 let io;
 
 function init(app) {
-  const httpServer = http.createServer(app); 
+  const httpServer = http.createServer(app);
   io = socketio(httpServer);
 
-  io.use( async (socket, next) => {
-    let token = socket.handshake.query.token;
+  io.use(async (socket, next) => {
+    const token = socket.handshake.query.token;
 
-    jwt.verify(token, JWT_SECRET, function(err, decryptedToken) {
+    jwt.verify(token, JWT_SECRET, async function(err, decryptedToken) {
       if (!decryptedToken || err) {
         socket.disconnect();
         return;
@@ -21,6 +22,13 @@ function init(app) {
         id: decryptedToken.id,
         name: decryptedToken.username,
       };
+      // get all rooms for a user_id and join all rooms for this socket
+      const userRooms = await RoomUsers.find({
+        user_id: decryptedToken.id
+      });
+      userRooms.forEach(userRoom => {
+        socket.join(userRoom.room)
+      })
       return next()
     });
   });
@@ -47,7 +55,7 @@ function get() {
 module.exports = {
   init,
   get,
-  getSocketById
-}
+  getSocketById,
+};
 
 // connexion a un fichier socketio pour éviter une dépendance ciruculaire
