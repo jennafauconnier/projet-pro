@@ -72,10 +72,7 @@ const addMessage = async (req, res) => {
       .in(room.name)
       .emit('MESSAGE', {
         ...message,
-        user: {
-          id: req.__user.id,
-          username: req.__user.username,
-        },
+        username: req.__user.username,
       });
     res.status(200).send(message);
   } catch (error) {

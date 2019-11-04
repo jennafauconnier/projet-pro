@@ -14,9 +14,8 @@ class Room extends Component {
   componentDidMount() {
     this.getMessages();
     subscribe('MESSAGE', message => {
-      console.warn('message', message);
-      if (message.room !== this.props.match.params.roomName) return;
-      console.log({ message });
+      if (String(message.room_id) !== String(this.props.match.params.roomName))
+        return;
       this.setState({
         messages: this.state.messages.concat(message),
       });

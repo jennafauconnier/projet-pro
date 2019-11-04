@@ -24,9 +24,12 @@ function init(app) {
       };
       // get all rooms for a user_id and join all rooms for this socket
       const knex = sql.get();
-      const userRooms = await knex('room_user').where({
-        user_id: decryptedToken.id,
-      });
+      const userRooms = await knex('room_user')
+        .where({
+          user_id: decryptedToken.id,
+        })
+        .innerJoin('rooms', 'room_id', 'rooms.id')
+        .select('rooms.name');
       userRooms.forEach(userRoom => {
         socket.join(userRoom.name);
       });
