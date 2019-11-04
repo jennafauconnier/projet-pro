@@ -12,7 +12,7 @@ const TABLES = [
   },
   {
     table: 'rooms',
-    createTable: table => {
+    createTable: (table, knex) => {
       table.increments();
       table.string('name', 60).notNullable();
       table.timestamp('created_at').defaultTo(knex.fn.now());
@@ -36,7 +36,7 @@ const TABLES = [
   },
   {
     table: 'room_user',
-    createTable: table => {
+    createTable: (table, knex) => {
       table.increments();
       table.integer('user_id').notNullable();
       table.integer('room_id').notNullable();
@@ -50,7 +50,7 @@ exports.up = async knex => {
   await Promise.all(
     TABLES.map(async ({ table, createTable }) => {
       const tableExists = await knex.schema.hasTable(table);
-      if (tableExists) throw new Error(`table ${table} exists`);
+      if (tableExists) await knex.schema.dropTable(table);
       await knex.schema.createTable(table, kTable => createTable(kTable, knex));
     }),
   );
