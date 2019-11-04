@@ -1,8 +1,8 @@
 const http = require('http');
 const socketio = require('socket.io');
 const jwt = require('jsonwebtoken');
+const sql = require('./services/sql');
 const { JWT_SECRET } = require('./users/controller');
-const RoomUsers = require('./rooms/roomModel');
 
 let io;
 
@@ -23,25 +23,22 @@ function init(app) {
         name: decryptedToken.username,
       };
       // get all rooms for a user_id and join all rooms for this socket
-      const userRooms = await RoomUsers.find({
-        user_id: decryptedToken.id
+      const knex = sql.get();
+      const userRooms = await knex('room_user').where({
+        user_id: decryptedToken.id,
       });
-      console.log('new connection', {
-        userRooms,
-        user: decryptedToken
-      })
       userRooms.forEach(userRoom => {
-        socket.join(userRoom.room)
-      })
-      return next()
+        socket.join(userRoom.name);
+      });
+      return next();
     });
   });
 
-  io.on('connection', function(socket){
-    console.log('a user connected');
+  io.on('connection', function(socket) {
+    console.log(`New socket connected for user ${socket.__user.id}`);
   });
-  
-  httpServer.listen(3007, function(){
+
+  httpServer.listen(3007, function() {
     console.log('listening on *:3007');
   });
 }

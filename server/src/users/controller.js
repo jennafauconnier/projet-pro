@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('./model');
 const sql = require('../services/sql');
 
 const BCRYPT_SALT_ROUNDS = 10;
