@@ -48,13 +48,11 @@ const login = async (req, res) => {
   const knex = sql.get();
 
   try {
-    const res = await knex('users').where({ username }, '*');
-    user = res[0];
-    console.log(user);
+    const users = await knex('users').where({ username }, '*');
+    user = users[0];
     if (!user) {
       return res.status(401).send();
     }
-    console.log(password, user.password);
     isSamePassword = await bcrypt.compareSync(password, user.password);
 
     if (!isSamePassword) {
@@ -71,7 +69,7 @@ const login = async (req, res) => {
     );
     res.status(200).send({ token });
   } catch (error) {
-    res.status(403).send({});
+    res.status(401).send({});
   }
 };
 
