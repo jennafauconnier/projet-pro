@@ -30,12 +30,6 @@ if (USE_MIGRATIONS) {
   };
 }
 
-if (USE_FIXTURES) {
-  knexConfig.seeds = {
-    directory: `${__dirname}/fixtures`,
-  };
-}
-
 async function init() {
   client = knex(knexConfig);
   if (USE_MIGRATIONS) {
