@@ -21,7 +21,9 @@ class SignIn extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  postSignIn = (username, password) => {
+  postSignIn = (event) => {
+    event.preventDefault()
+    const { username, password } = this.state
     const body = JSON.stringify({ username, password })
     const headers = {
       'Accept' : 'application/json',
@@ -51,17 +53,17 @@ class SignIn extends Component {
         <div className="sign-in_title">
             <h2>Sign in</h2>
         </div>
-        <form className="sign-in_form">
+        <form className="sign-in_form" onSubmit={this.postSignIn}>
             <div className="sign-in_form-element sign-in_form-username">
                 <input type="text" name="username" required placeholder="Username" value={this.state.username} onChange={this.handleChange}></input>
             </div>
             <div className="sign-in_form-element sign-in_form-password">
                 <input type="password" name="password" required placeholder="Password" value={this.state.password} onChange={this.handleChange}></input>
             </div>
+            <div className="sign-in_button">
+              <button className="sign-in_submit" value="Signin" type="submit">Sign in</button>
+            </div>
         </form>
-        <div className="sign-in_button">
-            <button className="sign-in_submit" value="Signin" onClick={() => this.postSignIn(this.state.username, this.state.password)}>Sign in</button>
-        </div>
       </div>
     )
   }

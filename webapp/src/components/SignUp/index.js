@@ -11,17 +11,14 @@ class SignUp extends Component {
     this.setState({ [e.target.name] : e.target.value });
   }
 
-  postSignUp = () => {
-    console.log("PROPS", this.props)
-    console.log('in post signup')
+  postSignUp = (event) => {
+    event.preventDefault()
     const { username, password } = this.state
-    console.log("CRED", { username, password })
     const body = JSON.stringify({ username, password })
     const headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }
-    console.log("before fetching")
 
     fetch('http://localhost:4332/users/signup', {
       method : 'POST',
@@ -29,31 +26,27 @@ class SignUp extends Component {
       body
     })
     .then(res => {
-      console.log("RESULT AFTER SIGN UP", res)
+      if (res.status !== 200) {
+        throw new Error('Invalid credentials');
+      }
       return res.json()
     })
     .then(() => {
-      console.log("GET CREDS AND LOG IN", body, headers)
-      // return fetch('http://localhost:4332/users/signin', {
-      //   method : 'POST',
-      //   headers,
-      //   body
-      // })
-      return "toto"
+      return fetch('http://localhost:4332/users/signin', {
+        method : 'POST',
+        headers,
+        body
+      })
     })
-    .then(() => {
-      // if (res.status !== 200) {
-      //   throw new Error('Invalid credentials');
-      // }
-      // return res.json();
-      console.log("kikoulol")
-      return "you"
+    .then((res) => {
+      if (res.status !== 200) {
+        throw new Error('Cannot create user');
+      }
+      return res.json();
     })
-    .then(() => {
-      // this.props.setToken(data.token)
-      // this.props.onSuccess(data);
-      console.log("normally there is save the token")
-      return "toto"
+    .then((data) => {
+      this.props.setToken(data.token)
+      this.props.onSuccess(data);
     })
     .catch(err => console.warn(err))
   }
