@@ -18,7 +18,7 @@ class SignIn extends Component {
   }
 
   handleChange = (e) => {
-    this.setState({ [e.target.id]: e.target.value });
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   postSignIn = (username, password) => {
@@ -47,24 +47,21 @@ class SignIn extends Component {
 
   render() {
     return(
-      <div className="login_sign-in">
-          <div className="sign-in_content">
-            <h1>Hello Evengers !</h1>
-              <div className="sign-in_title">
-                  <h2>Sign in</h2>
-              </div>
-              <form className="sign-in_form">
-                  <div className="sign-in_form-element sign-in_form-username">
-                      <input type="text" id="username" name="username" required placeholder="Username" value={this.state.username} onChange={this.handleChange}></input>
-                  </div>
-                  <div className="sign-in_form-element sign-in_form-password">
-                      <input type="password" id="password" name="password" required placeholder="Password" value={this.state.password} onChange={this.handleChange}></input>
-                  </div>
-              </form>
-              <div className="sign-in_button">
-                  <button className="sign-in_submit" value="Signin" onClick={() => this.postSignIn(this.state.username, this.state.password)}>Sign in</button>
-              </div>
-          </div>
+      <div className="sign-in_content">
+        <div className="sign-in_title">
+            <h2>Sign in</h2>
+        </div>
+        <form className="sign-in_form">
+            <div className="sign-in_form-element sign-in_form-username">
+                <input type="text" name="username" required placeholder="Username" value={this.state.username} onChange={this.handleChange}></input>
+            </div>
+            <div className="sign-in_form-element sign-in_form-password">
+                <input type="password" name="password" required placeholder="Password" value={this.state.password} onChange={this.handleChange}></input>
+            </div>
+        </form>
+        <div className="sign-in_button">
+            <button className="sign-in_submit" value="Signin" onClick={() => this.postSignIn(this.state.username, this.state.password)}>Sign in</button>
+        </div>
       </div>
     )
   }

@@ -33,7 +33,6 @@ class App extends Component {
   render() {
     return(
       <div className="App">
-        <div id="background"></div>
         <div className="chat_main">
           <div className="chat_col-main">
             <div className="chat_container">
