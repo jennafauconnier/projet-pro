@@ -11,42 +11,39 @@ export function connectSocket(token) {
 
   socket = io(`http://localhost:3007?token=${token}`);
 
-  socket.on('connect', (socket) => {
-    console.log('connected')
+  socket.on('MESSAGE', payload => {
+    triggerEvent('MESSAGE', payload);
   });
-
-  socket.on('MESSAGE', (payload) => {
-    console.log('coucou')
-    triggerEvent('MESSAGE', payload)
-  })
 }
 
 export function disconnectSocket() {
   if (socket) {
-    socket.disconnect()
+    socket.disconnect();
     socket = undefined;
   }
 }
 
 const subscribers = {
   // MESSAGE: [callback1, callback2]
-}
+};
 
 export function subscribe(eventName, callback) {
   if (!subscribers[eventName]) subscribers[eventName] = [];
 
-  subscribers[eventName].push(callback)
+  subscribers[eventName].push(callback);
 
   // unsubscribe function
   return () => {
-    subscribers[eventName] = subscribers[eventName].filter(cb => cb !== callback)
-  }
+    subscribers[eventName] = subscribers[eventName].filter(
+      cb => cb !== callback,
+    );
+  };
 }
 
 function triggerEvent(eventName, payload) {
-  if (!subscribers[eventName]) return
+  if (!subscribers[eventName]) return;
 
-  subscribers[eventName].forEach((callback) => {
-    callback(payload)
-  })
+  subscribers[eventName].forEach(callback => {
+    callback(payload);
+  });
 }

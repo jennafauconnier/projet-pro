@@ -14,7 +14,6 @@ class Room extends Component {
   };
 
   componentDidUpdate(nextProps) {
-    console.warn(nextProps);
     if (this.props.match.params.roomName !== nextProps.match.params.roomName) {
       this.setState({
         message: '',
