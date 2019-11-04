@@ -2,6 +2,7 @@ import moment from 'moment';
 import React, { Component } from 'react';
 import { subscribe } from '../../services/socket';
 import { connect } from 'react-redux';
+import Layout from '../Layout';
 import './Room.scss';
 import '../../../node_modules/font-awesome/css/font-awesome.min.css';
 
@@ -9,10 +10,25 @@ class Room extends Component {
   state = {
     message: '',
     messages: [],
+    room: {},
   };
+
+  componentDidUpdate(nextProps) {
+    console.warn(nextProps);
+    if (this.props.match.params.roomName !== nextProps.match.params.roomName) {
+      this.setState({
+        message: '',
+        messages: [],
+        room: {},
+      });
+      this.getMessages();
+      this.getRoom();
+    }
+  }
 
   componentDidMount() {
     this.getMessages();
+    this.getRoom();
     subscribe('MESSAGE', message => {
       if (String(message.room_id) !== String(this.props.match.params.roomName))
         return;
@@ -48,6 +64,25 @@ class Room extends Component {
       .catch(err => console.warn(err));
   };
 
+  getRoom = () => {
+    const headers = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${this.props.token}`,
+    };
+    fetch(`http://localhost:4332/rooms/${this.props.match.params.roomName}`, {
+      method: 'GET',
+      headers,
+    })
+      .then(res => res.json())
+      .then(room => {
+        this.setState({
+          room,
+        });
+      })
+      .catch(err => console.warn(err));
+  };
+
   getMessages = () => {
     const headers = {
       Accept: 'application/json',
@@ -63,7 +98,6 @@ class Room extends Component {
     )
       .then(res => res.json())
       .then(messages => {
-        console.warn({ messages });
         this.setState({
           messages,
         });
@@ -77,50 +111,49 @@ class Room extends Component {
 
   render() {
     return (
-      <div className="room_content">
-        <div className="room_content_creation">
-          <p>Room {this.props.match.params.roomName}</p>
-        </div>
-        <div className="messages">
-          <ul>
+      <Layout>
+        <div className="Room">
+          <div className="Room_header">
+            <h2>
+              {this.state.room
+                ? this.state.room.name
+                : this.props.match.params.roomName}
+            </h2>
+            <p>{this.state.room ? this.state.room.usersCount : '-'} user(s)</p>
+          </div>
+          <ul className="Room_messages">
             {this.state.messages.map(message => {
               return (
                 <li key={message.id}>
-                  <div className="username">
-                    <span>{message.username}</span>
-                    <span className="username-date">
-                      {this.formatDate(message.date)}
-                    </span>
-                    <p>{message.text}</p>
+                  <div className="Room_user">
+                    <strong>{message.username}</strong>
+                    <i>{this.formatDate(message.date)}</i>
                   </div>
+                  <p className="Room_text">{message.text}</p>
                 </li>
               );
             })}
           </ul>
-        </div>
-        <form
-          className="room_content_form"
-          onSubmit={e => {
-            e.preventDefault();
-            this.addMessage(this.state.message);
-          }}
-        >
-          <label>
+          <form
+            className="Room_form"
+            onSubmit={e => {
+              e.preventDefault();
+              this.addMessage(this.state.message);
+            }}
+          >
             <input
-              className="send_message_input"
+              className="Room_input"
               type="text"
               name="message"
               value={this.state.message}
               onChange={this.onMessageChange}
             ></input>
-          </label>
-          <div className="send_message_button">
-            <button className="button_send" value="Envoyer" type="submit">
+            <button className="Room_button" value="Envoyer" type="submit">
               <i className="fa fa-paper-plane"></i>
             </button>
-          </div>
-        </form>
-      </div>
+          </form>
+        </div>
+      </Layout>
     );
   }
 }

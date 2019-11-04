@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import './App.scss';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from './components/Login';
@@ -21,43 +21,33 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.handleSocketConnection(this.props.token)
+    this.handleSocketConnection(this.props.token);
   }
-  
+
   componentDidUpdate(prevProps) {
     if (this.props.token === prevProps.token) return;
 
-    this.handleSocketConnection(this.props.token)
+    this.handleSocketConnection(this.props.token);
   }
 
   render() {
-    return(
-      <div className="App">
-        <div id="background"></div>
-        <div className="chat_main">
-          <div className="chat_col-main">
-            <div className="chat_container">
-              <Router>
-                <Header />
-                <Switch>
-                  <Route path="/login" component={Login} />
-                  <Route path="/room/:roomName" component={Room} />
-                  <Route path="/room/:roomName/messages" component={PrivateRoom} />
-                  <Route path="/" component={Home} />
-                </Switch>
-              </Router>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
+    return (
+      <Router>
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route path="/room/:roomName" component={Room} />
+          <Route path="/room/:roomName/messages" component={PrivateRoom} />
+          <Route path="/" component={Home} />
+        </Switch>
+      </Router>
+    );
   }
 }
 
 const mapStateToProps = state => {
-  return { 
+  return {
     token: state.token,
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps)(App);

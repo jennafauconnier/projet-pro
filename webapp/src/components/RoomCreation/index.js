@@ -1,43 +1,40 @@
 import React, { Component } from 'react';
 import './RoomCreation.scss';
 
-
 class RoomCreation extends Component {
   state = {
-    roomName : ''
-  }
+    roomName: '',
+  };
 
-  setRoomName = (e) => {
+  setRoomName = e => {
     this.setState({ roomName: e.target.value });
-  }
+  };
 
-  onClick = () => {
+  onSubmit = () => {
     this.props.onRoomCreation(this.state.roomName);
-  }
-  
+  };
+
   render() {
-    return(
-      <div className="room_name">
-        <div className="room_name-content">
-          <p>Create a room</p>
-        </div>
-        <form className="room-name_form">
+    return (
+      <div className="NewRoom">
+        <label htmlFor="newRoom" className="NewRoom_label">
+          Create a room
+        </label>
+        <form className="NewRoom_form" onSubmit={this.onSubmit}>
           <input
             type="text"
+            id="newRoom"
             required
-            placeholder="Enter a room name"
+            placeholder="Room name"
             onChange={this.setRoomName}
-          ></input>
-        </form>
-        <div className="room-name_button">
-          <button
-            className="room-name_button_submit"
-            onClick={this.onClick}>
-              Submit
+            className="NewRoom_input"
+          />
+          <button className="NewRoom_button" type="submit">
+            Submit
           </button>
-        </div>
+        </form>
       </div>
-    )
+    );
   }
 }
 

@@ -94,7 +94,21 @@ const getMessages = async (req, res) => {
   }
 };
 
+const getRoom = async (req, res) => {
+  try {
+    const knex = sql.get();
+    const [room] = await knex('rooms').where({ id: req.params.roomId }, '*');
+    const [{ count }] = await knex('room_user')
+      .where({ room_id: req.params.roomId })
+      .count('*');
+    res.status(200).send({ ...room, usersCount: count });
+  } catch (error) {
+    res.status(500).send(500);
+  }
+};
+
 module.exports = {
+  getRoom,
   getAll,
   createRoom,
   addMessage,
